@@ -13,14 +13,14 @@
 
 
   tasks:
-    - name: ensure apache is at the latest version
-      action: yum pkg=httpd state=latest
-    - name: write the apache config file
-      action: template src=httpd.j2 dest=/etc/httpd.conf
-      notify:
-        - restart apache
-    - name: ensure apache is running
-      action: service name=httpd state=started
+    - name: Adding a file
+      file:
+        path: /tmp/foo.conf
+        owner: vagrant
+        group: vagrant
+        state: file
+        mode: 0644
+
   handlers:
-    - name: restart apache
-      action: service name=httpd state=restart
+    - name: restart sshd
+      action: service name=sshd state=restart
