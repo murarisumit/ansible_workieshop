@@ -1,0 +1,10 @@
+[local]
+127.0.0.1
+
+[webservers]
+192.168.111.122
+www.bsg.mil
+www2.bsg.mil
+
+[db-group]
+10.0.1.123

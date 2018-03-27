@@ -1,0 +1,26 @@
+---
+- hosts: webservers
+  user: root
+  vars:
+    http_port: 80
+    max_clients: 200
+  gather_facts: False
+  pre_tasks:
+    - name: Install python for Ansible
+      raw: test -f /usr/bin/python || (apt -y update && apt install -y python-minimal)
+      become: true
+    - setup: # aka gather_facts
+
+
+  tasks:
+    - name: ensure apache is at the latest version
+      action: yum pkg=httpd state=latest
+    - name: write the apache config file
+      action: template src=httpd.j2 dest=/etc/httpd.conf
+      notify:
+        - restart apache
+    - name: ensure apache is running
+      action: service name=httpd state=started
+  handlers:
+    - name: restart apache
+      action: service name=httpd state=restart
