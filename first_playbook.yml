@@ -4,7 +4,8 @@
   vars:
     http_port: 80
     max_clients: 200
-    custom_user: sumit
+    custom_user: 'sumit'
+    content: 'supermann'
   gather_facts: False
   pre_tasks:
     - name: Install python for Ansible
@@ -31,6 +32,18 @@
         mode: 0644
       become: true
 
+    - name: Adding new template file
+      template:
+        src: templates/templ.j2
+        dest: /tmp/templated.conf
+        owner: '{{ custom_user }}'
+        group: '{{ custom_user }}'
+        mode: 0600
+      notify:
+        reload sshd
+      become: true
+
   handlers:
-    - name: restart sshd
-      action: service name=sshd state=restart
+    - name: reload sshd
+      action: service name=sshd state=reloaded
+      become: true
