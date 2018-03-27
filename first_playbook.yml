@@ -4,6 +4,7 @@
   vars:
     http_port: 80
     max_clients: 200
+    custom_user: sumit
   gather_facts: False
   pre_tasks:
     - name: Install python for Ansible
@@ -15,7 +16,7 @@
   tasks:
     - name: Add new user
       user:
-        name: sumit
+        name: '{{ custom_user }}'
         state: present
         shell: /bin/bash
         comment: 'create with ansible'
@@ -24,12 +25,11 @@
     - name: Adding a file
       file:
         path: /tmp/foo.conf
-        owner: vagrant
-        group: vagrant
+        owner: '{{ custom_user }}'
+        group: '{{ custom_user }}'
         state: file
         mode: 0644
-
-
+      become: true
 
   handlers:
     - name: restart sshd
